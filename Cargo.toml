@@ -11,4 +11,5 @@ src = "src/bin/main.rs"
 name = "lib"
 path = "src/lib.rs"
 
-[dependencies]
+[build-dependencies]
+protoc-rust-grpc = "0.2.0"
