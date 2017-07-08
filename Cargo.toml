@@ -12,5 +12,5 @@ name = "lib"
 path = "src/lib.rs"
 
 [build-dependencies]
-protobuf         = "1.*"
+protobuf         = "1.4.1"
 protoc-rust-grpc = "0.2.0"
