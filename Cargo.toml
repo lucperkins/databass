@@ -1,0 +1,14 @@
+[package]
+name = "databass"
+version = "0.1.0"
+authors = ["Luc Perkins <lucperkins@gmail.com>"]
+
+[[bin]]
+name = "bin"
+src = "src/bin/main.rs"
+
+[lib]
+name = "lib"
+path = "src/lib.rs"
+
+[dependencies]
