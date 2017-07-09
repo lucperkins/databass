@@ -1,25 +1,8 @@
-pub struct Person {
-    pub name: &'static str,
-    pub age: i16
-}
+extern crate futures;
+extern crate futures_cpupool;
+extern crate grpc;
+extern crate protobuf;
+extern crate tls_api;
 
-impl Person {
-    pub fn new(name: &'static str, age: i16) -> Self {
-        Person {
-            name: name,
-            age: age
-        }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use Person;
-
-    #[test]
-    fn create_person() {
-        let luc: Person = Person::new("Luc", 35);
-        assert_eq!(luc.name, "Luc");
-        assert_eq!(luc.age, 35);
-    }
-}
+pub mod kv;
+pub mod kv_grpc;

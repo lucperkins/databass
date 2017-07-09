@@ -1,6 +1,19 @@
+sudo: false
+dist: trusty
 language: rust
-rust:
-- 1.18.0
 
-before_install:
+rust:
+- stable
+- beta
+- nightly
+
+script:
+- rustc --version
 - make install-protobuf
+- cargo install protobuf
+- cargo check --all
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never

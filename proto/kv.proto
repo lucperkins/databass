@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package kv;
+
+message GetRequest {
+
+}
+
+message GetResponse {
+
+}
+
+service KV {
+    rpc Get (GetRequest) returns (GetResponse) {}
+}

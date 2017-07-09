@@ -1,5 +1,6 @@
 target/
 **/*.rs.bk
 Cargo.lock
-src/proto/*.rs
+src/kv.rs
+src/kv_grpc.rs
 protobuf-*
