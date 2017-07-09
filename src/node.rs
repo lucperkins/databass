@@ -1,8 +1,9 @@
 use std::thread;
 
 use grpc::{RequestOptions, Server, ServerBuilder, SingleResponse};
-use kv::{GetRequest, GetResponse};
+use kv::{GetRequest, GetResponse, PutRequest, PutResponse};
 use kv_grpc::{KV, KVServer};
+use rocksdb::DB;
 
 pub trait Runnable {
     fn start(self) -> ();
@@ -17,8 +18,41 @@ struct KVImpl;
 
 impl KV for KVImpl {
     fn get(&self, _o: RequestOptions, req: GetRequest) -> SingleResponse<GetResponse> {
+        let bucket = req.get_bucket();
+        let key = req.get_key();
         let mut res = GetResponse::new();
-        res.set_payload(String::from("here is a message").into_bytes());
+
+        let path = format!("/tmp/buckets/{}", bucket);
+        let db = DB::open_default(path).unwrap();
+
+        match db.get(key.as_bytes()) {
+            Ok(Some(vector)) => {
+                res.set_payload(vector.to_vec());
+            }
+            Ok(None) => {
+                res.set_payload(String::from("EMPTY").into_bytes());
+            }
+            Err(e) => {
+                res.set_payload(String::from("ERROR").into_bytes());
+            }
+        }
+
+        SingleResponse::completed(res)
+    }
+
+    fn put(&self, _o: RequestOptions, req: PutRequest) -> SingleResponse<PutResponse> {
+        let bucket = req.get_bucket();
+        let key = req.get_key();
+        let value = req.get_value();
+        let mut res = PutResponse::new();
+
+        let path = format!("/tmp/buckets/{}", bucket);
+        let db = DB::open_default(path).unwrap();
+        match db.put(key.as_bytes(), value) {
+            Ok(()) => res.set_message(String::from("SUCCESS")),
+            Err(e) => res.set_message(String::from("FAILURE"))
+        }
+
         SingleResponse::completed(res)
     }
 }

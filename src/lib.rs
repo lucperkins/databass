@@ -1,7 +1,8 @@
 extern crate futures;
 extern crate futures_cpupool;
-extern crate protobuf;
 extern crate grpc;
+extern crate protobuf;
+extern crate rocksdb;
 extern crate tls_api;
 
 pub mod kv;

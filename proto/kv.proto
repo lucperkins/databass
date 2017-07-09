@@ -3,13 +3,25 @@ syntax = "proto3";
 package kv;
 
 message GetRequest {
-    string key = 1;
+    string bucket = 1;
+    string key = 2;
 }
 
 message GetResponse {
     bytes payload = 1;
 }
 
+message PutRequest {
+    string bucket = 1;
+    string key = 2;
+    bytes value = 3;
+}
+
+message PutResponse {
+    string message = 1;
+}
+
 service KV {
     rpc Get (GetRequest) returns (GetResponse) {}
+    rpc Put (PutRequest) returns (PutResponse) {}
 }
