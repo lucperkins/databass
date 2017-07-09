@@ -11,8 +11,12 @@ doctest = false
 test = false
 
 [[bin]]
-name = "bin"
-path = "src/bin/main.rs"
+name = "server"
+path = "src/bin/server.rs"
+
+[[bin]]
+name = "client"
+path = "src/bin/client.rs"
 
 [build-dependencies]
 protoc-rust-grpc = { git = "https://github.com/stepancheg/grpc-rust" }
