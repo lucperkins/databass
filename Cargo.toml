@@ -2,21 +2,25 @@
 name = "databass"
 version = "0.1.0"
 authors = ["Luc Perkins <lucperkins@gmail.com>"]
-
-[[bin]]
-name = "bin"
-src = "src/bin/main.rs"
+build = "build.rs"
 
 [lib]
 name = "lib"
 path = "src/lib.rs"
+doctest = false
+test = false
+
+[[bin]]
+name = "bin"
+path = "src/bin/main.rs"
 
 [build-dependencies]
-protoc-rust-grpc = "0.2.0"
+protoc-rust-grpc = { git = "https://github.com/stepancheg/grpc-rust" }
 
 [dependencies]
 protobuf        = "1.*"
 futures         = "0.*"
-grpc            = "0.2.0"
-futures-cpupool = "0.1.5"
-tls-api         = "0.1.8"
+futures-cpupool = "0.1.*"
+tls-api         = "0.*"
+httpbis         = "0.4.1"
+grpc            = "*"

@@ -3,11 +3,11 @@ syntax = "proto3";
 package kv;
 
 message GetRequest {
-
+    string key = 1;
 }
 
 message GetResponse {
-
+    bytes payload = 1;
 }
 
 service KV {

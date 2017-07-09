@@ -1,8 +1,10 @@
 extern crate lib;
 
-use lib::Person;
+use lib::kv::GetRequest;
 
 fn main() {
-    let luc = Person::new("Luc", 35);
-    println!("Name of person: {}", luc.name);
+    let mut get_request = GetRequest::new();
+    get_request.set_key("my-key".to_string());
+    let key = get_request.get_key();
+    println!("{}", key);
 }
