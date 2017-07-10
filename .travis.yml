@@ -9,8 +9,8 @@ rust:
 
 script:
 - rustc --version
-- make install-protobuf
-- cargo install protobuf
+#- make install-protobuf
+#- cargo install protobuf
 - cargo check --all
 
 notifications:
