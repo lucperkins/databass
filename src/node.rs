@@ -1,7 +1,7 @@
 use std::thread;
 
-use grpc::{RequestOptions, Server, ServerBuilder, SingleResponse};
-use kv::{GetRequest, GetResponse, PutRequest, PutResponse};
+use grpc::{RequestOptions, ServerBuilder, SingleResponse};
+use kv::{DeleteRequest, GetRequest, GetResponse, PutRequest, WriteResponse};
 use kv_grpc::{KV, KVServer};
 use rocksdb::DB;
 
@@ -32,7 +32,7 @@ impl KV for KVImpl {
             Ok(None) => {
                 res.set_payload(String::from("EMPTY").into_bytes());
             }
-            Err(e) => {
+            Err(_) => {
                 res.set_payload(String::from("ERROR").into_bytes());
             }
         }
@@ -40,17 +40,33 @@ impl KV for KVImpl {
         SingleResponse::completed(res)
     }
 
-    fn put(&self, _o: RequestOptions, req: PutRequest) -> SingleResponse<PutResponse> {
+    fn put(&self, _o: RequestOptions, req: PutRequest) -> SingleResponse<WriteResponse> {
         let bucket = req.get_bucket();
         let key = req.get_key();
         let value = req.get_value();
-        let mut res = PutResponse::new();
+        let mut res = WriteResponse::new();
 
         let path = format!("/tmp/buckets/{}", bucket);
         let db = DB::open_default(path).unwrap();
         match db.put(key.as_bytes(), value) {
             Ok(()) => res.set_message(String::from("SUCCESS")),
-            Err(e) => res.set_message(String::from("FAILURE"))
+            Err(_) => res.set_message(String::from("FAILURE"))
+        }
+
+        SingleResponse::completed(res)
+    }
+
+    fn delete(&self, _o: RequestOptions, req: DeleteRequest) -> SingleResponse<WriteResponse> {
+        let bucket = req.get_bucket();
+        let key = req.get_key();
+        let mut res = WriteResponse::new();
+
+        let path = format!("/tmp/buckets/{}", bucket);
+        let db = DB::open_default(path).unwrap();
+
+        match db.delete(key.as_bytes()) {
+            Ok(()) => res.set_message(String::from("SUCCESS")),
+            Err(_) => res.set_message(String::from("FAILURE"))
         }
 
         SingleResponse::completed(res)
